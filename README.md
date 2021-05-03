@@ -1,5 +1,6 @@
-# layer5-repo-template
-This repository is used as the boilerplate for consistency across all Layer5 repos.
+# Service Mesh Interface Conformance GitHub Action
+
+GitHub Action for `mesheryctl mesh validate` for SMI conformance - https://meshery.io/service-mesh-interface
 
 <div>&nbsp;</div>
 
