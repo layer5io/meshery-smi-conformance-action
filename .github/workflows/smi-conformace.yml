@@ -1,0 +1,91 @@
+
+name: smi-conformance
+
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    env:
+      # mesheryctl or helm
+      DEPLOYMENT_MODE: mesheryctl
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      
+      - name: Install mesheryctl
+        run: |
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          brew tap layer5io/tap
+          brew install mesheryctl
+          
+      - name: copy default config
+        run: |
+          mkdir -p  ~/.meshery
+          cd  ~/.meshery
+          wget https://raw.githubusercontent.com/layer5io/meshery/37af1e8fea802ac754e83473cb9f63d97d8d850f/mesheryctl/pkg/utils/TestConfig.yaml 
+          mv TestConfig.yaml config.yaml 
+          
+      - name: verify install
+        run: mesheryctl version
+        
+      - name: install go
+        run: sudo apt install golang-go
+        
+      - name: install kind
+        run: GO111MODULE="on" go get sigs.k8s.io/kind@v0.10.0 && kind create cluster
+        
+      - name: export kubeconfig
+        run: export KUBECONFIG=${HOME}/.kube/config
+        
+      - name: install kubectl
+        run: |
+          sudo apt-get update && sudo apt-get install -y apt-transport-https gnupg2
+          curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+          echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
+          sudo apt-get update
+          sudo apt-get install -y kubectl
+      - name: install helm
+        if: ${{ env.DEPLOYMENT_MODE == 'helm' }} 
+        run: curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+        
+      - name: deploy meshery using helm 
+        if: ${{ env.DEPLOYMENT_MODE == 'helm' }} 
+        run: |
+             git clone https://github.com/layer5io/meshery.git; cd meshery
+             kubectl create namespace meshery
+             helm install meshery --namespace meshery install/kubernetes/helm/meshery 
+           
+      - name: deploy using mesheryctl
+        if: ${{ env.DEPLOYMENT_MODE == 'mesheryctl' }} 
+        run:  mesheryctl system start
+      
+        
+      - name: export token
+        run: export TOKEN="${{ secrets.AUTH_TOKEN }}"
+        
+      - name: pipe to a file
+        run: |
+          cat <<EOF > ~/auth.json
+          { "meshery-provider": "Meshery", "token": "$TOKEN" }
+          EOF
+       
+      - name:  configure meshery
+        run:  mesheryctl system config minikube -t ~/auth.json && mesheryctl system logs
+       
+             
+ 
