@@ -2,6 +2,8 @@
 
 GitHub Action for `mesheryctl mesh validate` for SMI conformance - https://meshery.io/service-mesh-interface
 
+[![smi-conformance](https://github.com/layer5io/mesheryctl-smi-conformance-action/actions/workflows/smi-conformace.yml/badge.svg)](https://github.com/layer5io/mesheryctl-smi-conformance-action/actions/workflows/smi-conformace.yml)
+
 <div>&nbsp;</div>
 
 ## Join the service mesh community!
