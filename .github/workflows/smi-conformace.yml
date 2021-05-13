@@ -87,6 +87,9 @@ jobs:
          
       - name:  configure meshery
         run: kubectl config view --flatten
+
+      - name: perfom smi conformance tests
+        run: mesheryctl mesh validate -a meshery-istio -t ~/auth.json --spec smi 
        
              
  
