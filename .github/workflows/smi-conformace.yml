@@ -1,5 +1,5 @@
 
-name: smi-conformance-tests
+name: smi-conformance
 
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
@@ -33,12 +33,8 @@ jobs:
           brew tap layer5io/tap
           brew install mesheryctl
           
-      - name: copy default config
-        run: |
-          mkdir -p  ~/.meshery
-          cd  ~/.meshery
-          wget https://raw.githubusercontent.com/layer5io/meshery/37af1e8fea802ac754e83473cb9f63d97d8d850f/mesheryctl/pkg/utils/TestConfig.yaml 
-          mv TestConfig.yaml config.yaml 
+      - name: create meshconfig
+        run:  mesheryctl system context create -p kubernetes        
           
       - name: verify install
         run: mesheryctl version
