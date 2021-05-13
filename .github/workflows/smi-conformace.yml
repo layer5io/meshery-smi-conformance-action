@@ -33,10 +33,7 @@ jobs:
           brew tap layer5io/tap
           brew install mesheryctl
           
-
-      - name: verify install
-        run: mesheryctl version
-        
+          
       - name: install go
         run: sudo apt install golang-go
         
