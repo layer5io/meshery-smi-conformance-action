@@ -33,9 +33,7 @@ jobs:
           brew tap layer5io/tap
           brew install mesheryctl
           
-      - name: create meshconfig
-        run:  mesheryctl system context create -p kubernetes        
-          
+
       - name: verify install
         run: mesheryctl version
         
@@ -69,9 +67,11 @@ jobs:
            
       - name: deploy using mesheryctl
         if: ${{ env.DEPLOYMENT_MODE == 'mesheryctl' }} 
-        run:  mesheryctl system start
+        run: |
+          mesheryctl system start -y
+          mesheryctl system context create -p kubernetes        
       
-        
+  
       - name: export token
         run: export TOKEN="${{ secrets.AUTH_TOKEN }}"
         
