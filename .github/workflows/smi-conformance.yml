@@ -1,0 +1,47 @@
+
+name: service-mesh-performance
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+  workflow_dispatch:
+
+jobs:
+  perftest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install mesheryctl
+        run: |
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+          brew tap layer5io/tap
+          brew install mesheryctl
+          
+      - name: export token
+        run: export TOKEN="${{ secrets.AUTH_TOKEN }}"
+        
+      - name: pipe to a file
+        run: |
+          cat <<EOF > ~/auth.json
+          { "meshery-provider": "Meshery", "token": "$TOKEN" }
+          EOF
+      - name: setup minikube
+        uses: manusa/actions-setup-minikube@v2.4.1
+        with:
+          minikube version: 'v1.16.0'
+          kubernetes version: 'v1.19.2'
+
+      - name: deploy meshery
+        run: curl -L https://git.io/meshery | bash -
+
+      - name:  configure meshery
+        run: |
+          mesheryctl system config minikube -t ~/auth.json
+          minikube tunnel /dev/null 2>&1
+
+      - name: perfom smi conformance tests
+        run: mesheryctl perf --name "inital perf tests" --url https://docs.meshery.io --qps 300 --concurrent-requests 2 --duration 30s --token ~/auth.json
+  
