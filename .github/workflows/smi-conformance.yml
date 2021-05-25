@@ -34,7 +34,7 @@ jobs:
           kubernetes version: 'v1.19.2'
 
       - name: deploy meshery
-        run: mesheryctl system start --platform kubernetes
+        run: mesheryctl system start --yes --platform kubernetes
 
       - name:  configure meshery
         run: |
