@@ -36,7 +36,7 @@ jobs:
       - name: deploy meshery
         run: |
           mesheryctl system context create k8s -p kubernetes -s
-          mesheryctl system start -y
+          mesheryctl system start --yes
 
 
       - name:  configure meshery
