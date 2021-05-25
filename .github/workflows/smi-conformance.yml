@@ -22,12 +22,11 @@ jobs:
           
       - name: export token
         run: export TOKEN="${{ secrets.AUTH_TOKEN }}"
-        
-      - name: pipe to a file
+
+      - name: pipe to file
         run: |
-          cat <<EOF > ~/auth.json
-          { "meshery-provider": "Meshery", "token": "$TOKEN" }
-          EOF
+          echo '{ "meshery-provider": "Meshery", "token": $TOKEN }' | jq > ~/auth.json
+
       - name: setup minikube
         uses: manusa/actions-setup-minikube@v2.4.1
         with:
