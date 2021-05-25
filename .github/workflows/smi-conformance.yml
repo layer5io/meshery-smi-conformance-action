@@ -25,7 +25,7 @@ jobs:
 
       - name: pipe to file
         run: |
-          echo '{ "meshery-provider": "Meshery", "token": '$TOKEN' }' | jq > ~/auth.json
+          echo '{ "meshery-provider": "Meshery", "token": null }' | jq '.token = env.TOKEN' > ~/auth.json
 
       - name: setup minikube
         uses: manusa/actions-setup-minikube@v2.4.1
