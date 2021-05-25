@@ -34,7 +34,7 @@ jobs:
           kubernetes version: 'v1.19.2'
 
       - name: deploy meshery
-        run: curl -L https://git.io/meshery | bash -
+        run: mesheryctl system start --platform kubernetes
 
       - name:  configure meshery
         run: |
