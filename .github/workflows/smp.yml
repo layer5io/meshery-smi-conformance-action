@@ -42,7 +42,6 @@ jobs:
         run: |
           kubectl config view --minify --flatten > ~/minified_config
           mv ~/minified_config ~/.kube/config
-          minikube tunnel /dev/null 2>&1
 
       - name: perfom smi conformance tests
         run: mesheryctl perf --name "mesheryctl action perf tests" --url https://www.google.com --qps 4 --concurrent-requests 1 --duration 6s --token ~/auth.json
