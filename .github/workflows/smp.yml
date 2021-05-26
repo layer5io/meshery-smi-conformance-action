@@ -12,9 +12,10 @@ jobs:
   perftest:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+     # - uses: actions/checkout@v2
       - name: Install mesheryctl
         run: |
+          /bin/bash -c "curl -LO 'https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl'"
           /bin/bash -c "curl -L https://git.io/meshery | PLATFORM=kubernetes  bash -"
                     
       - name: export token
@@ -38,7 +39,7 @@ jobs:
 
       - name:  configure meshery
         run: |
-          mesheryctl system config minikube --token ~/auth.json
+          kubectl config view --minify --flatten > ~/.kube/config
           minikube tunnel /dev/null 2>&1
 
       - name: perfom smi conformance tests
