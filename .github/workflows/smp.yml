@@ -45,7 +45,7 @@ jobs:
 
       - name: expose deployment
         run: |
-          kubectl port-forward svc/meshery -n meshery 31980:31980 /dev/null 2&>1
+           kubectl port-forward svc/meshery -n meshery 31980:31980 /dev/null 2&>1
 
       - name: perfom smi conformance tests
         run: mesheryctl perf --name "mesheryctl action perf tests" --url https://www.google.com --qps 4 --concurrent-requests 1 --duration 6s --token ~/auth.json
