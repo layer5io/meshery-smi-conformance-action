@@ -1,5 +1,5 @@
 
-name: service-mesh-performance
+name: mesheryctl-smp
 
 on:
   [push, repository_dispatch]
