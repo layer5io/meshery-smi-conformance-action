@@ -34,14 +34,16 @@ jobs:
       - name: deploy meshery
         run: |
           mesheryctl system context create k8s -p kubernetes
+          mesheryctl system context switch k8s
           mesheryctl system start --yes
 
 
       - name:  configure meshery
         run: |
-          kubectl config view --minify --flatten > ~/.kube/config
+          kubectl config view --minify --flatten > ~/minified_config
+          mv ~/minified_config ~/.kube/config
           minikube tunnel /dev/null 2>&1
 
       - name: perfom smi conformance tests
-        run: mesheryctl perf --name "inital perf tests" --url https://docs.meshery.io --qps 300 --concurrent-requests 2 --duration 30s --token ~/auth.json
+        run: mesheryctl perf --name "mesheryctl action perf tests" --url https://www.google.com --qps 4 --concurrent-requests 1 --duration 6s --token ~/auth.json
   
