@@ -15,11 +15,8 @@ jobs:
       - uses: actions/checkout@v2
       - name: Install mesheryctl
         run: |
-          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
-          brew tap layer5io/tap
-          brew install mesheryctl
-          
+          /bin/bash -c "curl -L https://git.io/meshery | PLATFORM=kubernetes  bash -"
+                    
       - name: export token
         run: export TOKEN="${{ secrets.AUTH_TOKEN }}"
 
