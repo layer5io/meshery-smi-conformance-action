@@ -37,6 +37,10 @@ jobs:
           mesheryctl system context switch k8s
           mesheryctl system start --yes
 
+      - name: configure docker bridge
+        run: |
+          docker network connect bridge meshery_meshery_1
+          docker network connect minikube meshery_meshery_1
         
       - name:  configure meshery
         run: |
