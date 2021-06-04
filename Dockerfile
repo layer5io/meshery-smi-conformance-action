@@ -16,4 +16,5 @@ RUN git clone https://github.com/layer5io/meshery.git; cd meshery
 RUN kubectl create namespace meshery
 RUN yq e '.service.type = "NodePort"' -i install/kubernetes/helm/meshery/values.yaml
 RUN helm install meshery --namespace meshery install/kubernetes/helm/meshery
+RUN kubectl expose deployment meshery --port=9081 --type=NodePort
 ENTRYPOINT ["/entrypoint.sh"]
