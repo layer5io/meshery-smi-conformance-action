@@ -1,0 +1,11 @@
+name: 'mesheryctl-smp'
+description: 'Run service mesh perfomance test from github actions'
+inputs:
+  token:
+    description: 'token used for used authenticating with meshery server'
+    required: true
+
+runs:
+  using: docker
+  image: Dockerfile
+
