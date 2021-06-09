@@ -32,8 +32,7 @@ jobs:
           eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
           brew tap layer5io/tap
           brew install mesheryctl
-          
-          
+
       - name: install go
         run: sudo apt install golang-go
         
@@ -68,7 +67,6 @@ jobs:
           mesheryctl system start -y
           mesheryctl system context create -p kubernetes        
       
-  
       - name: export token
         run: export TOKEN="${{ secrets.AUTH_TOKEN }}"
         
@@ -84,5 +82,3 @@ jobs:
       - name: perfom smi conformance tests
         run: mesheryctl mesh validate -a meshery-istio -t ~/auth.json --spec smi 
        
-             
- 
