@@ -35,7 +35,7 @@ jobs:
         run: |
           mesheryctl system context create k8s -p kubernetes
           mesheryctl system context switch k8s
-          mesheryctl system start --yes
+          mesheryctl system start --yes -p kubernetes
 
       # - name: configure docker bridge
       #   run: |
