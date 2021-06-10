@@ -33,8 +33,7 @@ jobs:
 
       - name: deploy meshery
         run: |
-          mesheryctl system context create k8s -p kubernetes
-          mesheryctl system context switch k8s
+          export PLATFORM=kubernetes
           mesheryctl system start --yes
 
       - name: configure docker bridge
