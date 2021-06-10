@@ -36,11 +36,7 @@ jobs:
           export PLATFORM=kubernetes
           mesheryctl system start --yes
 
-      - name: configure docker bridge
-        run: |
-          docker network connect bridge meshery_meshery_1
-          docker network connect minikube meshery_meshery_1
-        
+
       - name:  configure meshery
         run: |
           kubectl config view --minify --flatten > ~/minified_config
