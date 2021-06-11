@@ -33,24 +33,15 @@ jobs:
 
       - name: deploy meshery
         run: |
-          mesheryctl system context create k8s -p kubernetes
-          mesheryctl system context switch k8s
-          mesheryctl system start --yes -p kubernetes
+          export PLATFORM=kubernetes
+          mesheryctl system start --yes
 
-      # - name: configure docker bridge
-      #   run: |
-      #     docker network connect bridge meshery_meshery_1
-      #     docker network connect minikube meshery_meshery_1
-        
+
       - name:  configure meshery
         run: |
           kubectl config view --minify --flatten > ~/minified_config
           mv ~/minified_config ~/.kube/config
 
-
-      - name: expose deployment
-        run: |
-           kubectl port-forward svc/meshery -n meshery 31980:31980 /dev/null 2&>1
 
       - name: perfom smi conformance tests
         run: mesheryctl perf --name "mesheryctl action perf tests" --url https://www.google.com --qps 4 --concurrent-requests 1 --duration 6s --token ~/auth.json
