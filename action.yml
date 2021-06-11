@@ -4,6 +4,9 @@ inputs:
   token:
     description: 'token used for used authenticating with meshery server'
     required: true
+  performance_profile:
+    description: 'SMP compatible profile'
+    required: true
 
 runs:
   using: docker
