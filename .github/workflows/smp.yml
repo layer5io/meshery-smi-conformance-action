@@ -51,5 +51,5 @@ jobs:
 
 
       - name: perfom smi conformance tests
-        run: mesheryctl perf --name "mesheryctl action perf tests" --url https://www.google.com --qps 4 --concurrent-requests 1 --duration 6s --token ~/auth.json
+        run: mesheryctl perf apply --name "mesheryctl action perf tests" --url https://www.google.com --qps 4 --concurrent-requests 1 --duration 6s --token ~/auth.json
   
