@@ -22,7 +22,7 @@ jobs:
         run: |
          git clone https://github.com/layer5io/meshery.git; cd meshery/mesheryctl
          make
-         mv ./mesheryctl /usr/local/bin/
+         sudo mv ./mesheryctl /usr/local/bin/
                     
       - name: export token    
         run: export TOKEN="${{ secrets.AUTH_TOKEN }}"
