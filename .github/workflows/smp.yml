@@ -39,9 +39,9 @@ jobs:
 
       - name: deploy meshery
         run: |
-          mesheryctl system channel set edge
           export PLATFORM=kubernetes
           mesheryctl system start --yes
+         
 
 
       - name:  configure meshery
