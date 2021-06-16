@@ -13,12 +13,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
      # - uses: actions/checkout@v2
+     # /bin/bash -c "curl -LO 'https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl'"
+      #    /bin/bash -c "curl -L https://git.io/meshery | PLATFORM=kubernetes  bash -"
+      - name: install go
+        run: sudo apt install golang
+      
       - name: Install mesheryctl
         run: |
-          /bin/bash -c "curl -LO 'https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl'"
-          /bin/bash -c "curl -L https://git.io/meshery | PLATFORM=kubernetes  bash -"
+         git clone https://github.com/layer5io/meshery.git; cd meshery/mesheryctl
+         make
+         mv ./mesheryctl /usr/local/bin/
                     
-      - name: export token
+      - name: export token    
         run: export TOKEN="${{ secrets.AUTH_TOKEN }}"
 
       - name: pipe to file
