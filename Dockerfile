@@ -11,10 +11,12 @@ RUN sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys CC86BB64
 RUN sudo add-apt-repository ppa:rmescandon/yq
 RUN sudo apt update
 RUN sudo apt install yq -y
+RUN sudo api install jq
 RUN curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
 RUN git clone https://github.com/layer5io/meshery.git; cd meshery
 RUN kubectl create namespace meshery
 RUN yq e '.service.type = "NodePort"' -i install/kubernetes/helm/meshery/values.yaml
 RUN helm install meshery --namespace meshery install/kubernetes/helm/meshery
+RUN cd mesheryctl && make && sudo mv mesheryctl /usr/local/bin/mesheryctl
 RUN kubectl expose deployment meshery --port=9081 --type=NodePort
 ENTRYPOINT ["/entrypoint.sh"]
