@@ -29,7 +29,7 @@ jobs:
 
       - name: pipe to file
         run: |
-          echo '{ "meshery-provider": "Meshery", "token": null }' | jq '.token = env.TOKEN' > ~/auth.json
+          echo '{ "meshery-provider": "None", "token": null }' | jq '.token = ""' > ~/auth.json
 
       - name: setup minikube
         uses: manusa/actions-setup-minikube@v2.4.1
@@ -51,5 +51,6 @@ jobs:
 
 
       - name: perfom smi conformance tests
-        run: mesheryctl perf apply --profile test --name "mesheryctl action perf tests" --url https://www.google.com --qps 4 --concurrent-requests 1 --duration 6s --token ~/auth.json
+        run: mesheryctl mesh validate -a istio -s smi -t ~/auth.json  
+  
   
