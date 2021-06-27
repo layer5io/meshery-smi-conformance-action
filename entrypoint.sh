@@ -1,10 +1,10 @@
 #!/bin/sh -l
 set -e
 
-curl -L https://git.io/meshery | PLATFORM=kubernetes  bash - 
- 
 export TOKEN=${INPUT_TOKEN}
+export PERF_PROFILE=${INPUT_PERFORMANCE_PROFILE}
 
-echo '{ "meshery-provider": "Meshery", "token": null }' | jq '.token = env.TOKEN' > ~/auth.json
+echo '{ "meshery-provider": "None", "token": null }' | jq '.token = env.TOKEN' > ~/auth.json
 
-mesheryctl perf --name "mesheryctl action perf tests" --url https://google.com --qps 4 --concurrent-requests 1     --duration 6s --token ~/auth.json
+mesheryctl perf apply -f $PERF_PROFILE -t $TOKEN
+
