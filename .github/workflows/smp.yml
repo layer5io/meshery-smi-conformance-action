@@ -51,5 +51,6 @@ jobs:
 
 
       - name: perfom smi conformance tests
-        run: mesheryctl perf apply --profile test --url https://google.com -t ~/auth.json
+        run: mesheryctl mesh validate -a istio -s smi -t ~/auth.json  
+  
   
