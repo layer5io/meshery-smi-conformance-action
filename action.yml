@@ -1,14 +1,19 @@
-name: 'mesheryctl-smp'
-description: 'Run service mesh perfomance test from github actions'
+name: "Meshery Service Mesh Spec Validation Action"
+description: "Validate service mesh specifications using Meshery"
+author: "Layer5"
 inputs:
-  token:
-    description: 'token used for used authenticating with meshery server'
+  provider_token:
+    description: "Provider token to use. NOTE: value of the 'token' key in auth.json"
+  spec:
+    description: "Spec to run. Possible values: SMI, istio-vet. (SMP coming soon)"
     required: true
-  performance_profile:
-    description: 'SMP compatible profile'
+  service_mesh:
+    # used for provisioning appropriate meshery-adatper
+    description: "Service mesh to use. e.g: osm, istio etc"
     required: true
-
+  platform:
+    description: "Platform to deploy meshery on. Possible values: docker, kubernetes"
+    default: docker
 runs:
-  using: docker
-  image: Dockerfile
-
+  using: "node12"
+  main: "main.js"

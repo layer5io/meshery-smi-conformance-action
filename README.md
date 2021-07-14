@@ -6,6 +6,43 @@ GitHub Action for `mesheryctl mesh validate` for SMI conformance - https://meshe
 
 <div>&nbsp;</div>
 
+## Example Configuration
+```yaml
+name: Meshery
+on:
+  push:
+    branches:
+      - 'master'
+
+jobs:
+  job1:
+    name: everything
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy k8s
+        uses: manusa/actions-setup-minikube@v2.4.1
+        with:
+          minikube version: 'v1.21.0'
+          kubernetes version: 'v1.20.7'
+          driver: docker
+
+      - name: Install OSM
+        run: |
+           curl -LO https://github.com/openservicemesh/osm/releases/download/v0.9.1/osm-v0.9.1-linux-amd64.tar.gz
+           tar -xzf osm-v0.9.1-linux-amd64.tar.gz
+           mkdir -p ~/osm/bin
+           mv ./linux-amd64/osm ~/osm/bin/osm-bin
+           PATH="$PATH:$HOME/osm/bin/"
+           osm-bin install --osm-namespace default
+
+      - name: mesheryctl action
+        uses: layer5io/mesheryctl-smi-conformance-action@master
+        with:
+          platform: docker
+          spec: smi
+          service_mesh: osm
+```
+
 ## Join the service mesh community!
 
 <a name="contributing"></a><a name="community"></a>
