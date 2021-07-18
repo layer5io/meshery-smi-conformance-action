@@ -16,6 +16,10 @@ main() {
 		setupArgs+=(--platform ${INPUT_PLATFORM})
 	fi
 
+	if [[ -n "${INPUT_SERVICE_MESH:-}" ]]; then
+		setupArgs+=(--service-mesh ${INPUT_SERVICE_MESH})
+	fi
+
 	"$SCRIPT_DIR/meshery.sh" "${setupArgs[@]}"
 
 	commandArgs=()

@@ -47,6 +47,18 @@ create_k8s_cluster() {
 	sleep 40
 }
 
+meshery_config() {
+	sudo wget https://github.com/mikefarah/yq/releases/download/v4.10.0/yq_linux_amd64 -O /usr/bin/yq --quiet
+	sudo chmod +x /usr/bin/yq
+
+	mkdir ~/.meshery
+	config='{"contexts":{"local":{"endpoint":"http://localhost:9081","token":"Default","platform":"docker","adapters":[],"channel":"stable","version":"latest"}},"current-context":"local","tokens":[{"location":"auth.json","name":"Default"}]}'
+
+	echo $config | yq e '."contexts"."local"."adapters"[0]="'$1'"' -P - > ~/.meshery/config.yaml
+
+	cat ~/.meshery/config.yaml
+}
+
 parse_command_line() {
 	while :
 	do
@@ -66,6 +78,15 @@ parse_command_line() {
 					shift
 				else
 					echo "ERROR: '-p|--platform' cannot be empty." >&2
+					exit 1
+				fi
+				;;
+			--service-mesh)
+				if [[ -n "${2:-}" ]]; then
+					meshery_config "meshery-$2"
+					shift
+				else
+					echo "ERROR: '--service-mesh' cannot be empty." >&2
 					exit 1
 				fi
 				;;
