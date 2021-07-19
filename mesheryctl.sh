@@ -2,6 +2,17 @@
 
 SCRIPT_DIR=$(dirname -- "$(readlink -f "${BASH_SOURCE[0]}" || realpath "${BASH_SOURCE[0]}")")
 
+declare -A adapters
+adapters["istio"]=meshery-istio:10000
+adapters["linkerd"]=meshery-linkerd:10001
+adapters["consul"]=meshery-consul:10002
+adapters["octarine"]=meshery-octarine:10003
+adapters["nsm"]=meshery-nsm:10004
+adapters["kuma"]=meshery-kuma:10007
+adapters["cpx"]=meshery-cpx:10008
+adapters["osm"]=meshery-osm:10009
+adapters["traefik-mesh"]=meshery-traefik-mesh:10006
+
 main() {
 	local service_mesh_adapter=
 	local spec=
@@ -26,7 +37,7 @@ parse_command_line() {
 				if [[ -n "${2:-}" ]]; then
 					# figure out assigning port numbers and adapter names
 					service_mesh=$2
-					service_mesh_adapter="meshery-$2:10009"
+					service_mesh_adapter=${adapters["$2"]}
 					shift
 				else
 					echo "ERROR: '--service-mesh' cannot be empty." >&2
