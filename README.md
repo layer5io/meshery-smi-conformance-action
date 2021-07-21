@@ -1,4 +1,4 @@
-# Service Mesh Interface Conformance GitHub Action
+# Meshery GitHub Action for Service Mesh Interface Conformance
 
 GitHub Action for `mesheryctl mesh validate` for SMI conformance - https://meshery.io/service-mesh-interface
 
