@@ -1,5 +1,5 @@
 name: "Service Mesh Interface Conformance with Meshery"
-description: "Validate service mesh specifications using Meshery"
+description: "Validate SMI specifications using Meshery"
 author: "Layer5"
 inputs:
   provider_token:
