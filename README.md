@@ -1,3 +1,30 @@
+<p style="text-align:center;" align="center"><a href="https://layer5.io/meshery"><img align="center" style="margin-bottom:20px;" src="https://raw.githubusercontent.com/layer5io/meshery/master/.github/assets/images/meshery/meshery-logo-tag-light-text-side.png"  width="70%" /></a><br /><br /></p>
+
+<p align="center">
+<a href="https://hub.docker.com/r/layer5/meshery" alt="Docker pulls">
+<img src="https://img.shields.io/docker/pulls/layer5/meshery.svg" /></a>
+<a href="https://goreportcard.com/report/github.com/layer5io/meshery" alt="Go Report Card">
+<img src="https://goreportcard.com/badge/github.com/layer5io/meshery" /></a>
+<a href="https://github.com/layer5io/meshery/actions" alt="Build Status">
+<img src="https://github.com/layer5io/meshery/workflows/Meshery/badge.svg" /></a>
+<a href="https://bestpractices.coreinfrastructure.org/projects/3564" alt="CLI Best Practices">
+<img src="https://bestpractices.coreinfrastructure.org/projects/3564/badge" /></a>
+<a href="https://github.com/layer5io/meshery" alt="Website">
+<img src="https://img.shields.io/website/https/layer5.io/meshery.svg" /></a>
+<a href="https://github.com/issues?utf8=✓&q=is%3Aopen+is%3Aissue+archived%3Afalse+org%3Alayer5io+label%3A%22help+wanted%22+" alt="GitHub issues by-label">
+<img src="https://img.shields.io/github/issues/layer5io/meshery/help%20wanted.svg" /></a>
+<a href="http://slack.layer5.io" alt="Join Slack">
+<img src="https://img.shields.io/badge/Slack-@layer5.svg?logo=slack"></a>
+<a href="https://twitter.com/intent/follow?screen_name=mesheryio" alt="Twitter Follow">
+<img src="https://img.shields.io/twitter/follow/layer5.svg?label=Follow+Layer5&style=social" /></a>
+<a href="https://github.com/layer5io/meshery" alt="LICENSE">
+<img src="https://img.shields.io/github/license/layer5io/meshery.svg" /></a>
+</p>
+
+<h5><p align="center"><i>If you’re using Meshery or if you like the project, please <a href="https://github.com/layer5io/meshery/stargazers">★</a> this repository to show your support! 🤩</i></p></h5>
+
+[Meshery](https://meshery.io) is the multi-service mesh management plane offering lifecycle, configuration, and performance management of service meshes and their workloads.
+
 # Meshery GitHub Action for Service Mesh Interface Conformance
 
 GitHub Action for `mesheryctl mesh validate` for SMI conformance - https://meshery.io/service-mesh-interface
