@@ -6,6 +6,23 @@ GitHub Action for `mesheryctl mesh validate` for SMI conformance - https://meshe
 
 <div>&nbsp;</div>
 
+
+## Inputs
+```yaml
+  provider_token:
+    description: "Provider token to use. NOTE: value of the 'token' key in auth.json"
+  spec:
+    description: "Spec to run. Possible values: SMI, istio-vet. (SMP coming soon)"
+    required: true
+  service_mesh:
+    # used for provisioning appropriate meshery-adatper
+    description: "Service mesh to use. e.g: osm, istio etc"
+    required: true
+  platform:
+    description: "Platform to deploy meshery on. Possible values: docker, kubernetes"
+    default: docker
+```
+
 ## Example Configuration
 ```yaml
 name: Meshery
@@ -42,6 +59,8 @@ jobs:
           spec: smi
           service_mesh: osm
 ```
+
+
 
 ## Join the service mesh community!
 
