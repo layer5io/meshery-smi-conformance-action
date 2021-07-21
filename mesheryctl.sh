@@ -18,15 +18,25 @@ main() {
 	local spec=
 	local service_mesh=
 
+	# temporary
+	# this is a patched version of mesheryctl
+	curl -L https://github.com/DelusionalOptimist/meshery/releases/download/v0.5.44/mesheryctl --output ~/mesheryctl
+	chmod +x ~/mesheryctl
+
 	parse_command_line "$@"
 	docker network connect bridge meshery_meshery_1
 	docker network connect minikube meshery_meshery_1
 	docker network connect minikube meshery_meshery-"$service_mesh"_1
 	docker network connect bridge meshery_meshery-"$service_mesh"_1
 
-	mesheryctl system config minikube -t ~/auth.json
+	~/mesheryctl system config minikube -t ~/auth.json
 	echo $spec $service_mesh_adapter
-	mesheryctl mesh validate --spec $spec --adapter $service_mesh_adapter -t ~/auth.json
+	~/mesheryctl mesh validate --spec $spec --adapter $service_mesh_adapter -t ~/auth.json > /dev/null 2>&1 &
+	echo "Wating for smi-conformance pods..."
+	sleep 10
+	kubectl logs -n meshery deployment.apps/smi-conformance -f
+	echo "Uploading results to cloud provider..."
+	sleep 40
 }
 
 parse_command_line() {
