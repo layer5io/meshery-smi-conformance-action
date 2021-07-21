@@ -32,7 +32,10 @@ main() {
 	~/mesheryctl system config minikube -t ~/auth.json
 	echo $spec $service_mesh_adapter
 	nohup ~/mesheryctl mesh validate --spec $spec --adapter $service_mesh_adapter -t ~/auth.json &
+	echo "Wating for smi-conformance pods..."
+	sleep 10
 	kubectl logs -n meshery deployment.apps/smi-conformance -f
+	echo "Uploading results to cloud provider..."
 	sleep 40
 }
 
