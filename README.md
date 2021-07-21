@@ -21,6 +21,8 @@
 <img src="https://img.shields.io/github/license/layer5io/meshery.svg" /></a>
 </p>
 
+[![smi-conformance](https://github.com/layer5io/meshery-smi-conformance-action/actions/workflows/smi-conformace.yml/badge.svg)](https://github.com/layer5io/meshery-smi-conformance-action/actions/workflows/smi-conformace.yml)
+
 <h5><p align="center"><i>If you’re using Meshery or if you like the project, please <a href="https://github.com/layer5io/meshery/stargazers">★</a> this repository to show your support! 🤩</i></p></h5>
 
 [Meshery](https://meshery.io) is the multi-service mesh management plane offering lifecycle, configuration, and performance management of service meshes and their workloads.
@@ -29,12 +31,15 @@
 
 GitHub Action for `mesheryctl mesh validate` for SMI conformance - https://meshery.io/service-mesh-interface
 
-[![smi-conformance](https://github.com/layer5io/mesheryctl-smi-conformance-action/actions/workflows/smi-conformace.yml/badge.svg)](https://github.com/layer5io/mesheryctl-smi-conformance-action/actions/workflows/smi-conformace.yml)
+**Learn More**
+- [SMI Conformance Dashboard](https://meshery.io/service-mesh-interface) (stand-alone)
+- [SMI Conformance Dashboard](https://layer5.io/service-mesh-landscape#smi) (service mesh landscape)
+- [Design Specification](https://docs.google.com/document/d/1HL8Sk7NSLLj-9PRqoHYVIGyU6fZxUQFotrxbmfFtjwc/edit#)
+- [Conformance Test Details](https://layer5.io/projects/service-mesh-interface-conformance)
 
-<div>&nbsp;</div>
+## How to Use
 
-
-## Inputs
+### Inputs
 ```yaml
   provider_token:
     description: "Provider token to use. NOTE: value of the 'token' key in auth.json"
