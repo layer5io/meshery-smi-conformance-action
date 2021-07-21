@@ -11,6 +11,7 @@ GitHub Action for `mesheryctl mesh validate` for SMI conformance - https://meshe
 ```yaml
   provider_token:
     description: "Provider token to use. NOTE: value of the 'token' key in auth.json"
+    required: optional
   spec:
     description: "Spec to run. Possible values: SMI, istio-vet. (SMP coming soon)"
     required: true
