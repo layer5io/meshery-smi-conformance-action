@@ -31,6 +31,8 @@
 
 GitHub Action for `mesheryctl mesh validate` for SMI conformance - https://meshery.io/service-mesh-interface
 
+<img src="/.github/readme/images/smi-conformance.png" width="110px" align="left" style="margin-right: 10px;" />
+
 **Learn More**
 - [SMI Conformance Dashboard](https://meshery.io/service-mesh-interface) (stand-alone)
 - [SMI Conformance Dashboard](https://layer5.io/service-mesh-landscape#smi) (service mesh landscape)
