@@ -6,6 +6,12 @@ set -o pipefail
 
 SCRIPT_DIR=$(dirname -- "$(readlink -f "${BASH_SOURCE[0]}" || realpath "${BASH_SOURCE[0]}")")
 
+# map for service meshes with abbreviated names
+declare -A
+meshName["open_service_mesh"]=osm
+meshName["traefik_mesh"]=traefik-mesh
+meshName["network_service_mesh"]=nsm
+
 main() {
 	setupArgs=()
 	if [[ -n "${INPUT_PROVIDER_TOKEN:-}" ]]; then
@@ -17,7 +23,12 @@ main() {
 	fi
 
 	if [[ -n "${INPUT_SERVICE_MESH:-}" ]]; then
-		setupArgs+=(--service-mesh ${INPUT_SERVICE_MESH})
+		meshNameLower=`echo $INPUT_SERVICE_MESH  | tr -d '"' | tr '[:upper:]' '[:lower:]'`
+		if [ $meshNameLower = "open_service_mesh" ] || [ $meshNameLower = "traefik_mesh" ] || [ $meshNameLower = "network_service_mesh" ]
+		then
+			serviceMeshAbb=${meshName["$meshNameLower"]}
+		fi
+		setupArgs+=(--service-mesh ${meshNameLower})
 	fi
 
 	"$SCRIPT_DIR/meshery.sh" "${setupArgs[@]}"
@@ -28,7 +39,12 @@ main() {
 	fi
 
 	if [[ -n "${INPUT_SERVICE_MESH:-}" ]]; then
-		commandArgs+=(--service-mesh ${INPUT_SERVICE_MESH})
+		meshNameLower=`echo $INPUT_SERVICE_MESH  | tr -d '"' | tr '[:upper:]' '[:lower:]'`
+		commandArgs+=(--service-mesh ${meshNameLower})
+	fi
+
+	if [[ -n "${INPUT_PATH_TO_BINARY:-}" ]]; then
+		commandArgs+=(--bin-path ${INPUT_PATH_TO_BINARY})
 	fi
 
 	"$SCRIPT_DIR/mesheryctl.sh" "${commandArgs[@]}"
