@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+set -o errexit
+set -o nounset
+set -o pipefail
+
 SCRIPT_DIR=$(dirname -- "$(readlink -f "${BASH_SOURCE[0]}" || realpath "${BASH_SOURCE[0]}")")
 
 declare -A adapters
@@ -18,36 +22,30 @@ adapters["traefik_mesh"]=meshery-traefik-mesh:10006
 
 main() {
 	local service_mesh_adapter=
-	local spec=
 	local service_mesh=
-	local bin_path=
-
-	# temporary
-	# this is a patched version of mesheryctl
-	curl -L https://github.com/DelusionalOptimist/meshery/releases/download/v0.5.44/mesheryctl --output ~/mesheryctl
-	chmod +x ~/mesheryctl
 
 	parse_command_line "$@"
+
+	shortName=$(echo ${adapters["$service_mesh"]} | cut -d '-' -f2 | cut -d ':' -f1)
+
+	# docker containers
 	docker network connect bridge meshery_meshery_1
 	docker network connect minikube meshery_meshery_1
-	docker network connect minikube meshery_meshery-`yq eval '.["contexts"] | .["local"] | .["adapters"] | .[]' ~/.meshery/config.yaml`_1
-	docker network connect bridge meshery_meshery-`yq eval '.["contexts"] | .["local"] | .["adapters"] | .[]' ~/.meshery/config.yaml`_1
+	docker network connect minikube meshery_meshery-"$shortName"_1
+	docker network connect bridge meshery_meshery-"$shortName"_1
 
-	~/mesheryctl system config minikube -t ~/auth.json
+	mesheryctl system config minikube -t ~/auth.json
 
-	# copy the binary to ~/.meshery/bin
-	cp $bin_path ~/.meshery/bin
+	# load balancer
+	minikube tunnel &> /dev/null &
+	sleep 10
 
 	# deploys the service mesh
-	mesheryctl mesh deploy --adapter $service_mesh_adapter -t ~/auth.json $service_mesh
+	mesheryctl mesh deploy --adapter $service_mesh_adapter -t ~/auth.json $service_mesh --watch
 
-	echo $spec $service_mesh_adapter
-	~/mesheryctl mesh validate --spec $spec --adapter $service_mesh_adapter -t ~/auth.json > /dev/null 2>&1 &
-	echo "Wating for smi-conformance pods..."
-	sleep 30
-	kubectl logs -n meshery deployment.apps/smi-conformance -f
+	mesheryctl mesh validate --spec "smi" --adapter $service_mesh_adapter -t ~/auth.json --watch
 	echo "Uploading results to cloud provider..."
-	sleep 40
+	sleep 20
 }
 
 parse_command_line() {
@@ -62,24 +60,6 @@ parse_command_line() {
 					shift
 				else
 					echo "ERROR: '--service-mesh' cannot be empty." >&2
-					exit 1
-				fi
-				;;
-			-s|--spec)
-				if [[ -n "${2:-}" ]]; then
-					spec=$2
-					shift
-				else
-					echo "ERROR: '--spec' cannot be empty." >&2
-					exit 1
-				fi
-				;;
-			--bin-path)
-				if [[ -n "${2:-}" ]]; then
-					bin_path=$2
-					shift
-				else
-					echo "ERROR: '--bin-path' cannot be empty." >&2
 					exit 1
 				fi
 				;;
