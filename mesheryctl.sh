@@ -23,6 +23,7 @@ adapters["traefik_mesh"]=meshery-traefik-mesh:10006
 main() {
 	local service_mesh_adapter=
 	local service_mesh=
+	local mesh_deployed=
 
 	parse_command_line "$@"
 
@@ -40,8 +41,13 @@ main() {
 	minikube tunnel &> /dev/null &
 	sleep 10
 
-	# deploys the service mesh
-	mesheryctl mesh deploy --adapter $service_mesh_adapter -t ~/auth.json $service_mesh --watch
+	# deploys the service mesh if not present
+	if [[ $mesh_deployed != "true" ]]
+	then
+		echo "Deploying $service_mesh..."
+		mesheryctl mesh deploy --adapter $service_mesh_adapter -t ~/auth.json $service_mesh --watch
+		sleep 30
+	fi
 
 	mesheryctl mesh validate --spec "smi" --adapter $service_mesh_adapter -t ~/auth.json --watch
 	echo "Uploading results to cloud provider..."
@@ -54,12 +60,20 @@ parse_command_line() {
 		case "${1:-}" in
 			--service-mesh)
 				if [[ -n "${2:-}" ]]; then
-					# figure out assigning port numbers and adapter names
 					service_mesh=$2
 					service_mesh_adapter=${adapters["$2"]}
 					shift
 				else
 					echo "ERROR: '--service-mesh' cannot be empty." >&2
+					exit 1
+				fi
+				;;
+			--mesh-deployed)
+				if [[ -n "${2:-}" ]]; then
+					mesh_deployed=$2
+					shift
+				else
+					echo "ERROR: '--mesh-deployed' cannot be empty." >&2
 					exit 1
 				fi
 				;;
