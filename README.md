@@ -59,11 +59,11 @@ GitHub Action for `mesheryctl mesh validate` for SMI conformance - https://meshe
     description: "SMP compatible name for service mesh to use. e.g: open_service_mesh, istio etc"
     required: true
 
-  # to identify if you want to run the tests on a cluster having the service 
+  # to identify if you want to run the tests on a cluster having the service
   # mesh pre-installed
   mesh_deployed:
     description: "A boolean. Set to true if you want to do tests on a custom deployment of the service mesh and not only on the latest release"
-	required: true
+  required: true
 ```
 
 ### Example Configurations
@@ -82,14 +82,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-			# This action takes care of installing a cluster, installing the latest
-			# release of a service mesh and running SMI Conformance Tests on it
+      # This action takes care of installing a cluster, installing the latest
+      # release of a service mesh and running SMI Conformance Tests on it
       - name: SMI conformance tests
         uses: layer5io/mesheryctl-smi-conformance-action@master
         with:
-					provider_token: ${{ secrets.PROVIDER_TOKEN }}
-          service_mesh: osm
-					mesh_deployed: false
+          provider_token: ${{ secrets.PROVIDER_TOKEN }}
+          service_mesh: open_service_mesh
+          mesh_deployed: false
 ```
 
 #### Doing SMI Conformance Tests on any version of a service mesh
@@ -106,7 +106,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-			# deploy k8s
+      # deploy k8s
       - name: Deploy k8s
         uses: manusa/actions-setup-minikube@v2.4.1
         with:
@@ -114,7 +114,7 @@ jobs:
           kubernetes version: 'v1.20.7'
           driver: docker
 
-			# Install the wanted version of your service mesh
+      # Install the wanted version of your service mesh
       - name: Install OSM
         run: |
            curl -LO https://github.com/openservicemesh/osm/releases/download/v0.9.1/osm-v0.9.1-linux-amd64.tar.gz
@@ -124,13 +124,13 @@ jobs:
            PATH="$PATH:$HOME/osm/bin/"
            osm-bin install --osm-namespace default
 
-			# perform SMI conformance validation on the mesh installed in the cluster
+      # perform SMI conformance validation on the mesh installed in the cluster
       - name: SMI conformance tests
         uses: layer5io/mesheryctl-smi-conformance-action@master
         with:
-					provider_token: ${{ secrets.PROVIDER_TOKEN }}
-          service_mesh: osm
-					mesh_deployed: true
+          provider_token: ${{ secrets.PROVIDER_TOKEN }}
+          service_mesh: open_service_mesh
+          mesh_deployed: true
 ```
 
 
