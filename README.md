@@ -39,7 +39,7 @@ GitHub Action for `mesheryctl mesh validate` for SMI conformance - https://meshe
 - [Design Specification](https://docs.google.com/document/d/1HL8Sk7NSLLj-9PRqoHYVIGyU6fZxUQFotrxbmfFtjwc/edit#)
 - [Conformance Test Details](https://layer5.io/projects/service-mesh-interface-conformance)
 
-## How to Use
+## Usage
 
 * **For initial releases, this action works the best with minikube clusters.**
 * We recommend using the [manusa/actions-setup-minikube](https://github.com/manusa/actions-setup-minikube) action.
@@ -68,7 +68,7 @@ GitHub Action for `mesheryctl mesh validate` for SMI conformance - https://meshe
 
 ### Example Configurations
 
-#### Doing SMI Conformance Tests on latest release of a Service Mesh
+#### Running SMI Conformance Tests on latest release of a Service Mesh
 ```yaml
 name: SMI Conformance Validation using Meshery
 on:
@@ -92,7 +92,7 @@ jobs:
           mesh_deployed: false
 ```
 
-#### Doing SMI Conformance Tests on any version of a service mesh
+#### Running SMI Conformance Tests on any version of a service mesh
 ```yaml
 name: SMI Conformance Validation using Meshery
 on:
