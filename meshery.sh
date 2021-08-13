@@ -15,7 +15,6 @@ main() {
 	parse_command_line "$@"
 
 	echo "Checking if a k8s cluster exits..."
-	kubectl config current-context
 	if kubectl config current-context
 	then
 		echo "Cluster found"
@@ -37,9 +36,9 @@ main() {
 	mv ~/minified_config ~/.kube/config
 
 	curl -L https://git.io/meshery | DEPLOY_MESHERY=false bash -
-	mesheryctl system context create new-context --adapters $service_mesh_adapter --platform docker --url http://localhost:9081 --set --yes
+	#mesheryctl system context create new-context --adapters $service_mesh_adapter --platform docker --url http://localhost:9081 --set --yes
 
-	mesheryctl system start
+	mesheryctl system start --yes
 
 	sleep 30
 }

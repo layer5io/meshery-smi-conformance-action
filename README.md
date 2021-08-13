@@ -39,38 +39,74 @@ GitHub Action for `mesheryctl mesh validate` for SMI conformance - https://meshe
 - [Design Specification](https://docs.google.com/document/d/1HL8Sk7NSLLj-9PRqoHYVIGyU6fZxUQFotrxbmfFtjwc/edit#)
 - [Conformance Test Details](https://layer5.io/projects/service-mesh-interface-conformance)
 
-## How to Use
+## Usage
+
+* **For initial releases, this action works the best with minikube clusters.**
+* We recommend using the [manusa/actions-setup-minikube](https://github.com/manusa/actions-setup-minikube) action.
+* We also recommend using the [ubuntu-latest](https://github.com/actions/virtual-environments#available-environments) environment.
 
 ### Inputs
 ```yaml
+  # this token is used to auth with meshery provider and persist conformance results
   provider_token:
     description: "Provider token to use. NOTE: value of the 'token' key in auth.json"
-    required: optional
-  spec:
-    description: "Spec to run. Possible values: SMI, istio-vet. (SMP coming soon)"
     required: true
+
+  # the name of the service mesh to run tests on. Must be in compliance with the Service Mesh Performance specification.
+  # see: https://github.com/service-mesh-performance/service-mesh-performance/blob/1de8c93d8cba4ba8c1120fe09b7bf6ce0aa48c83/protos/service_mesh.proto#L15-L28
   service_mesh:
     # used for provisioning appropriate meshery-adatper
-    description: "Service mesh to use. e.g: osm, istio etc"
+    description: "SMP compatible name for service mesh to use. e.g: open_service_mesh, istio etc"
     required: true
-  platform:
-    description: "Platform to deploy meshery on. Possible values: docker, kubernetes"
-    default: docker
+
+  # to identify if you want to run the tests on a cluster having the service
+  # mesh pre-installed
+  mesh_deployed:
+    description: "A boolean. Set to true if you want to do tests on a custom deployment of the service mesh and not only on the latest release"
+  required: true
 ```
 
-## Example Configuration
+### Example Configurations
+
+#### Running SMI Conformance Tests on latest release of a Service Mesh
 ```yaml
-name: Meshery
+name: SMI Conformance Validation using Meshery
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  do_conformance:
+    name: Conformance Validation
+    runs-on: ubuntu-latest
+    steps:
+
+      # This action takes care of installing a cluster, installing the latest
+      # release of a service mesh and running SMI Conformance Tests on it
+      - name: SMI conformance tests
+        uses: layer5io/mesheryctl-smi-conformance-action@master
+        with:
+          provider_token: ${{ secrets.PROVIDER_TOKEN }}
+          service_mesh: open_service_mesh
+          mesh_deployed: false
+```
+
+#### Running SMI Conformance Tests on any version of a service mesh
+```yaml
+name: SMI Conformance Validation using Meshery
 on:
   push:
     branches:
       - 'master'
 
 jobs:
-  job1:
-    name: everything
+  do_conformance:
+    name: SMI Conformance on every commit to master
     runs-on: ubuntu-latest
     steps:
+
+      # deploy k8s
       - name: Deploy k8s
         uses: manusa/actions-setup-minikube@v2.4.1
         with:
@@ -78,6 +114,7 @@ jobs:
           kubernetes version: 'v1.20.7'
           driver: docker
 
+      # Install the wanted version of your service mesh
       - name: Install OSM
         run: |
            curl -LO https://github.com/openservicemesh/osm/releases/download/v0.9.1/osm-v0.9.1-linux-amd64.tar.gz
@@ -87,12 +124,13 @@ jobs:
            PATH="$PATH:$HOME/osm/bin/"
            osm-bin install --osm-namespace default
 
-      - name: mesheryctl action
+      # perform SMI conformance validation on the mesh installed in the cluster
+      - name: SMI conformance tests
         uses: layer5io/mesheryctl-smi-conformance-action@master
         with:
-          platform: docker
-          spec: smi
-          service_mesh: osm
+          provider_token: ${{ secrets.PROVIDER_TOKEN }}
+          service_mesh: open_service_mesh
+          mesh_deployed: true
 ```
 
 
