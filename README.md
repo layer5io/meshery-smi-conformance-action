@@ -52,8 +52,8 @@ GitHub Action for `mesheryctl mesh validate` for SMI conformance - https://meshe
     description: "Provider token to use. NOTE: value of the 'token' key in auth.json"
     required: true
 
-  # the name of the service mesh to run tests on. Must be in compliance with
-  # https://github.com/service-mesh-performance/service-mesh-performance/blob/1de8c93d8cba4ba8c1120fe09b7bf6ce0aa48c83/protos/service_mesh.proto#L15-L28
+  # the name of the service mesh to run tests on. Must be in compliance with the Service Mesh Performance specification.
+  # see: https://github.com/service-mesh-performance/service-mesh-performance/blob/1de8c93d8cba4ba8c1120fe09b7bf6ce0aa48c83/protos/service_mesh.proto#L15-L28
   service_mesh:
     # used for provisioning appropriate meshery-adatper
     description: "SMP compatible name for service mesh to use. e.g: open_service_mesh, istio etc"
