@@ -19,90 +19,78 @@ GitHub Action to run [SMI Conformance](https://docs.meshery.io/functionality/ser
 
 Meshery is SMI's official tool for validating conformance. Learn more at [smi-spec.io](https://smi-spec.io/blog/validating-smi-conformance-with-meshery/).
 
-<img src="/.github/readme/images/smi-conformance.png" width="110px" align="left" style="margin-right: 10px;" />
+## Learn More
 
-**Learn More**
+- [Meshery and Service Mesh Interface](https://docs.meshery.io/functionality/service-mesh-interface)
+- [Guide: Running SMI Conformance Tests](https://docs.meshery.io/guides/smi-conformance)
+- [Conformance Test Details](https://layer5.io/projects/service-mesh-interface-conformance)
 - [SMI Conformance Dashboard](https://meshery.io/service-mesh-interface) (stand-alone)
 - [SMI Conformance Dashboard](https://layer5.io/service-mesh-landscape#smi) (service mesh landscape)
 - [Design Specification](https://docs.google.com/document/d/1HL8Sk7NSLLj-9PRqoHYVIGyU6fZxUQFotrxbmfFtjwc/edit#)
-- [Conformance Test Details](https://layer5.io/projects/service-mesh-interface-conformance)
+- [Supported Service Meshes](https://docs.meshery.io/service-meshes)
 
 ## Usage
 
-* **For initial releases, this action works the best with minikube clusters.**
-* We recommend using the [manusa/actions-setup-minikube](https://github.com/manusa/actions-setup-minikube) action.
-* We also recommend using the [ubuntu-latest](https://github.com/actions/virtual-environments#available-environments) environment.
+See [action.yml](action.yml)
 
-### Inputs
+By default, this action brings its own Kubernetes cluster(minikube), deploys the latest release of the service mesh specified and runs conformance tests (see [Running on latest release](#running-on-latest-release)).
+
+You can however bring your own clusters with a specific version of a service mesh installed and Meshery would automatically detect your environment and run the conformance test accordingly (see [Running on specific version](#running-on-specific-version)).
+
+See [Running SMI Conformance Tests in CI/CD Pipelines](https://docs.meshery.io/guides/smi-conformance#running-smi-conformance-tests-in-cicd-pipelines) for detailed instructions on setting up Meshery and authenticating the GitHub action.
+
+### Sample Configurations
+
+#### Running on latest release
+
+Meshery would handle setting up the environment, deploying the service mesh and running the conformance tests.
+
 ```yaml
-  # this token is used to auth with meshery provider and persist conformance results
-  provider_token:
-    description: "Provider token to use. NOTE: value of the 'token' key in auth.json"
-    required: true
-
-  # the name of the service mesh to run tests on. Must be in compliance with the Service Mesh Performance specification.
-  # see: https://github.com/service-mesh-performance/service-mesh-performance/blob/1de8c93d8cba4ba8c1120fe09b7bf6ce0aa48c83/protos/service_mesh.proto#L15-L28
-  service_mesh:
-    # used for provisioning appropriate meshery-adatper
-    description: "SMP compatible name for service mesh to use. e.g: open_service_mesh, istio etc"
-    required: true
-
-  # to identify if you want to run the tests on a cluster having the service
-  # mesh pre-installed
-  mesh_deployed:
-    description: "A boolean. Set to true if you want to do tests on a custom deployment of the service mesh and not only on the latest release"
-  required: true
-```
-
-### Example Configurations
-
-#### Running SMI Conformance Tests on latest release of a Service Mesh
-```yaml
-name: SMI Conformance Validation using Meshery
+name: SMI Conformance with Meshery
 on:
   push:
     tags:
       - 'v*'
 
 jobs:
-  do_conformance:
-    name: Conformance Validation
+  smi-conformance:
+    name: SMI Conformance
     runs-on: ubuntu-latest
     steps:
 
-      # This action takes care of installing a cluster, installing the latest
-      # release of a service mesh and running SMI Conformance Tests on it
       - name: SMI conformance tests
         uses: layer5io/mesheryctl-smi-conformance-action@master
         with:
-          provider_token: ${{ secrets.PROVIDER_TOKEN }}
+          provider_token: ${{ secrets.MESHERY_TOKEN }}
           service_mesh: open_service_mesh
           mesh_deployed: false
 ```
 
-#### Running SMI Conformance Tests on any version of a service mesh
+#### Running on specific version 
+(bring your own cluster)
+
+The environment with the service mesh installed provided by the user and Meshery runs the conformance tests.
+
 ```yaml
-name: SMI Conformance Validation using Meshery
+name: SMI Conformance with Meshery
 on:
   push:
     branches:
       - 'master'
 
 jobs:
-  do_conformance:
-    name: SMI Conformance on every commit to master
+  smi-conformance:
+    name: SMI Conformance tests on master
     runs-on: ubuntu-latest
     steps:
 
-      # deploy k8s
-      - name: Deploy k8s
+      - name: Deploy k8s-minikube
         uses: manusa/actions-setup-minikube@v2.4.1
         with:
           minikube version: 'v1.21.0'
           kubernetes version: 'v1.20.7'
           driver: docker
 
-      # Install the wanted version of your service mesh
       - name: Install OSM
         run: |
            curl -LO https://github.com/openservicemesh/osm/releases/download/v0.9.1/osm-v0.9.1-linux-amd64.tar.gz
@@ -112,16 +100,19 @@ jobs:
            PATH="$PATH:$HOME/osm/bin/"
            osm-bin install --osm-namespace default
 
-      # perform SMI conformance validation on the mesh installed in the cluster
       - name: SMI conformance tests
         uses: layer5io/mesheryctl-smi-conformance-action@master
         with:
-          provider_token: ${{ secrets.PROVIDER_TOKEN }}
+          provider_token: ${{ secrets.MESHERY_TOKEN }}
           service_mesh: open_service_mesh
           mesh_deployed: true
 ```
 
+## Reporting Conformance
 
+Service mesh projects can report their SMI Conformance results automatically and update it on the [SMI Conformance Dashboard](https://meshery.io/service-mesh-interface).
+
+See [Reporting Conformance](https://docs.meshery.io/functionality/service-mesh-interface#reporting-conformance) for details on how to setup reporting.
 
 ## Join the service mesh community!
 
