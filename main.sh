@@ -29,11 +29,6 @@ main() {
 		setupArgs+=(--service-mesh ${serviceMeshAbb})
 	fi
 
-	setupArgs+=(--platform docker)
-	#if [[ -n "${INPUT_PLATFORM:-}" ]]; then
-	#	setupArgs+=(--platform ${INPUT_PLATFORM})
-	#fi
-
 	"$SCRIPT_DIR/meshery.sh" "${setupArgs[@]}"
 
 	commandArgs=()
