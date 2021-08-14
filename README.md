@@ -61,7 +61,7 @@ jobs:
       - name: SMI conformance tests
         uses: layer5io/mesheryctl-smi-conformance-action@master
         with:
-          provider_token: ${{ secrets.MESHERY_TOKEN }}
+          provider_token: ${{ secrets.MESHERY_PROVIDER_TOKEN }}
           service_mesh: open_service_mesh
           mesh_deployed: false
 ```
@@ -103,7 +103,7 @@ jobs:
       - name: SMI conformance tests
         uses: layer5io/mesheryctl-smi-conformance-action@master
         with:
-          provider_token: ${{ secrets.MESHERY_TOKEN }}
+          provider_token: ${{ secrets.MESHERY_PROVIDER_TOKEN }}
           service_mesh: open_service_mesh
           mesh_deployed: true
 ```

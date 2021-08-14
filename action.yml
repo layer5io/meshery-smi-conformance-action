@@ -2,22 +2,21 @@ name: "Service Mesh Interface Conformance with Meshery"
 description: "Validate SMI specifications using Meshery"
 author: "Layer5"
 inputs:
-  # this token is used to auth with meshery provider and persist conformance results
+  # token to authenticate with Meshery
+  # see: https://docs.meshery.io/guides/smi-conformance#running-smi-conformance-tests-in-cicd-pipelines
   provider_token:
-    description: "Provider token to use. NOTE: value of the 'token' key in auth.json"
+    description: "Provider token to use. NOTE: value of the 'token' key in auth.json."
     required: true
 
-  # the name of the service mesh to deploy. Must be in compliance with
-  # https://github.com/service-mesh-performance/service-mesh-performance/blob/1de8c93d8cba4ba8c1120fe09b7bf6ce0aa48c83/protos/service_mesh.proto#L15-L28
+  # service mesh to deploy
+  # must be in compliance with: https://github.com/service-mesh-performance/service-mesh-performance/blob/1de8c93d8cba4ba8c1120fe09b7bf6ce0aa48c83/protos/service_mesh.proto#L15-L28
   service_mesh:
-    # used for provisioning appropriate meshery-adatper
-    description: "SMP compatible name for service mesh to use. e.g: open_service_mesh, istio etc"
+    description: "Service Mesh to use."
     required: true
 
-  # to identify if you want to run the tests on a cluster having the service 
-  # mesh pre-installed
+  # set to true if you are bringing your own cluster with a service mesh installed
   mesh_deployed:
-    description: "Set to true if you want to do tests on a custom deployment of the service mesh and not only on the latest release"
+    description: "Set to true for custom service mesh deployments other than the latest release."
     required: true
 
 runs:
