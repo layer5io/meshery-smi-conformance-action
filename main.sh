@@ -19,11 +19,6 @@ main() {
 		setupArgs+=(--provider-token ${INPUT_PROVIDER_TOKEN})
 	fi
 
-	setupArgs+=(--platform docker)
-	#if [[ -n "${INPUT_PLATFORM:-}" ]]; then
-	#	setupArgs+=(--platform ${INPUT_PLATFORM})
-	#fi
-
 	if [[ -n "${INPUT_SERVICE_MESH:-}" ]]; then
 		meshNameLower=`echo $INPUT_SERVICE_MESH  | tr -d '"' | tr '[:upper:]' '[:lower:]'`
 		if [ $meshNameLower = "open_service_mesh" ] || [ $meshNameLower = "traefik_mesh" ] || [ $meshNameLower = "network_service_mesh" ]
@@ -34,6 +29,11 @@ main() {
 		fi
 		setupArgs+=(--service-mesh ${serviceMeshAbb})
 	fi
+
+	setupArgs+=(--platform docker)
+	#if [[ -n "${INPUT_PLATFORM:-}" ]]; then
+	#	setupArgs+=(--platform ${INPUT_PLATFORM})
+	#fi
 
 	"$SCRIPT_DIR/meshery.sh" "${setupArgs[@]}"
 
