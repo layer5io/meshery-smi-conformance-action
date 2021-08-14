@@ -8,8 +8,8 @@ inputs:
     description: "Provider token to use. NOTE: value of the 'token' key in auth.json."
     required: true
 
-  # service mesh to deploy
-  # must be in compliance with: https://github.com/service-mesh-performance/service-mesh-performance/blob/1de8c93d8cba4ba8c1120fe09b7bf6ce0aa48c83/protos/service_mesh.proto#L15-L28
+  # name of the service mesh to deploy. Must be compliant with the Service Mesh Performance specification.
+  # https://github.com/service-mesh-performance/service-mesh-performance/blob/1de8c93d8cba4ba8c1120fe09b7bf6ce0aa48c83/protos/service_mesh.proto#L15-L28
   service_mesh:
     description: "Service Mesh to use."
     required: true
