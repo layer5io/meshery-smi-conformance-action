@@ -1,4 +1,4 @@
-<p style="text-align:center;" align="center"><a href="https://docs.meshery.io/guides/smi-conformance#running-smi-conformance-tests-in-cicd-pipelines"><img align="center" style="margin-bottom:20px;" src="./.github/readme/images/SMI%20Conformance%20with%20Meshery.png" /></a><br /><br /></p>
+<p style="text-align:center;" align="center"><a href="https://docs.meshery.io/guides/smi-conformance#running-smi-conformance-tests-in-cicd-pipelines"><img align="center" style="margin-bottom:20px;" src="./.github/readme/images/SMI%20Conformance%20with%20Meshery.jpeg" /></a><br /><br /></p>
 
 <p align="center">
 <a href="https://github.com/layer5io/meshery-smi-conformance-action/releases">
