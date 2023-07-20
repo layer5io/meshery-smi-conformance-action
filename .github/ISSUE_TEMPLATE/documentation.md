@@ -10,7 +10,7 @@ assignees: ''
 **Desired State:**
 
 ---
-<img src="https://raw.githubusercontent.com/layer5io/layer5/master/.github/assets/images/layer5/5-light-small.svg" width="24px" align="left" /><h2>Contributor Resources and <a href="https://layer5.io/community/handbook">Handbook</a></h2>
+<h2>Contributor Resources and <a href="https://layer5.io/community/handbook">Handbook</a></h2>
 
 The layer5.io website uses Gatsby, React, and GitHub Pages. Site content is found under the [`master` branch](https://github.com/layer5io/layer5/tree/master).
 - 📚 See [contributing instructions](https://github.com/layer5io/layer5/blob/master/CONTRIBUTING.md).
