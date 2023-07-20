@@ -5,7 +5,7 @@ contact_links:
   about: Submit your question using GitHub Discussions.
 
   ---
-<img src="https://raw.githubusercontent.com/layer5io/layer5/master/.github/assets/images/layer5/5-light-small.svg" width="24px" align="left" /><h2>Contributor Resources and <a href="https://layer5.io/community/handbook">Handbook</a></h2>
+<h2>Contributor Resources and <a href="https://layer5.io/community/handbook">Handbook</a></h2>
 
 - 📚 See [contributing instructions](https://github.com/layer5io/layer5/blob/master/CONTRIBUTING.md).
 - 🎨 Wireframes and [designs for Layer5 site](https://www.figma.com/file/5ZwEkSJwUPitURD59YHMEN/Layer5-Designs) in Figma [(open invite)](https://www.figma.com/team_invite/redeem/qJy1c95qirjgWQODApilR9)
